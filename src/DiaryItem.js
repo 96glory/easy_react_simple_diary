@@ -1,6 +1,6 @@
 const DiaryItem = (props) => {
   const { author, content, emotion, created_date } = props;
-  console.log(created_date);
+
   return (
     <div className="DiaryItem">
       <div className="info">
