@@ -1,5 +1,33 @@
-const DiaryItem = (props) => {
-  const { onDelete, id, author, content, emotion, created_date } = props;
+import React, { useRef, useState } from 'react';
+
+const DiaryItem = ({ onRemove, onEdit, id, author, content, emotion, created_date }) => {
+  const [isEdit, setIsEdit] = useState(false);
+  const [localContent, setLocalContent] = useState(content);
+
+  const localContentInput = useRef();
+
+  const handleRemove = () => {
+    if (window.confirm(`${id}번째 일기를 정말 삭제하시겠습니까?`)) {
+      onRemove(id);
+    }
+  };
+
+  const handleQuitEdit = () => {
+    setIsEdit(false);
+    setLocalContent(content);
+  };
+
+  const handleEdit = () => {
+    if (localContent.length < 5) {
+      localContentInput.current.focus();
+      return;
+    }
+
+    setIsEdit(false);
+    onEdit(id, localContent);
+  };
+
+  const toggleIsEdit = () => setIsEdit(!isEdit);
 
   return (
     <div className="DiaryItem">
@@ -10,16 +38,33 @@ const DiaryItem = (props) => {
         <br />
         <span className="date">{new Date(created_date).toLocaleString()}</span>
       </div>
-      <div className="content">{content}</div>
-      <button
-        onClick={() => {
-          if (window.confirm(`${id}번째 일기를 정말 삭제하시겠습니까?`)) {
-            onDelete(id);
-          }
-        }}
-      >
-        삭제하기
-      </button>
+      <div className="content">
+        {isEdit ? (
+          <>
+            <textarea
+              ref={localContentInput}
+              value={localContent}
+              onChange={(e) => {
+                setLocalContent(e.target.value);
+              }}
+            />
+          </>
+        ) : (
+          <>{content}</>
+        )}
+      </div>
+
+      {isEdit ? (
+        <>
+          <button onClick={handleQuitEdit}>수정 취소</button>
+          <button onClick={handleEdit}>수정 완료</button>
+        </>
+      ) : (
+        <>
+          <button onClick={handleRemove}>삭제하기</button>
+          <button onClick={toggleIsEdit}>수정하기</button>
+        </>
+      )}
     </div>
   );
 };
