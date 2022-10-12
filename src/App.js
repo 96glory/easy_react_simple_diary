@@ -2,7 +2,7 @@ import React, { useRef, useState, useEffect, useMemo, useCallback } from 'react'
 import './App.css';
 import DiaryEditor from './DiaryEditor';
 import DiaryList from './DiaryList';
-import Lifecycle from './Lifecycle';
+import _ from 'lodash';
 
 // https://jsonplaceholder.typicode.com/comments
 
@@ -71,7 +71,6 @@ function App() {
 
   return (
     <div>
-      {/* <Lifecycle /> */}
       <DiaryEditor onCreate={onCreate} />
       <div>전체 일기 : {data.length}</div>
       <div>기분 좋은 일기 개수 : {goodCount}</div>
