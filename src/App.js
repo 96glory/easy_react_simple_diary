@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect, useMemo, useCallback, useReducer } from 'react';
+import React, { useRef, useState, useEffect, useMemo, useCallback, useReducer, useContext } from 'react';
 import './App.css';
 import DiaryEditor from './DiaryEditor';
 import DiaryList from './DiaryList';
@@ -29,8 +29,6 @@ const reducer = (state, action) => {
 };
 
 function App() {
-  // const [data, setData] = useState([]);
-
   const [data, dispatch] = useReducer(reducer, []);
 
   const dataId = useRef(0);
@@ -51,7 +49,6 @@ function App() {
     });
 
     dispatch({ type: 'INIT', data: initData });
-    // setData(initData);
   });
 
   useEffect(() => {
@@ -59,29 +56,16 @@ function App() {
   }, []);
 
   const onCreate = useCallback((author, content, emotion) => {
-    //   const created_date = new Date().getTime();
-    //   const newItem = {
-    //     author,
-    //     content,
-    //     emotion,
-    //     created_date,
-    //     id: dataId.current,
-    //   };
-
     dispatch({ type: 'CREATE', data: { author, content, emotion, id: dataId.current } });
     dataId.current += 1;
-
-    // setData((data) => [newItem, ...data]); // 함수형 업데이트
   }, []);
 
   const onRemove = useCallback((targetId) => {
     dispatch({ type: 'REMOVE', targetId });
-    // setData((data) => data.filter((row) => row.id !== targetId));
   }, []);
 
   const onEdit = useCallback((targetId, newContent) => {
     dispatch({ type: 'EDIT', targetId, newContent });
-    // setData((data) => data.map((row) => (row.id === targetId ? { ...row, content: newContent } : row)));
   }, []);
 
   const getDiaryAnalysis = useMemo(() => {
