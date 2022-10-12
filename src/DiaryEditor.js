@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import React, { useRef, useState, memo } from 'react';
 
 const DiaryEditor = ({ onCreate }) => {
   const authorInput = useRef();
@@ -63,4 +63,4 @@ const DiaryEditor = ({ onCreate }) => {
   );
 };
 
-export default DiaryEditor;
+export default memo(DiaryEditor);
