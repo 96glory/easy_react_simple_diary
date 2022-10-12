@@ -44,15 +44,15 @@ function App() {
     dataId.current += 1;
 
     setData((data) => [newItem, ...data]); // 함수형 업데이트
-  });
+  }, []);
 
-  const onRemove = (targetId) => {
-    setData(data.filter((row) => row.id !== targetId));
-  };
+  const onRemove = useCallback((targetId) => {
+    setData((data) => data.filter((row) => row.id !== targetId));
+  }, []);
 
-  const onEdit = (targetId, newContent) => {
-    setData(data.map((row) => (row.id === targetId ? { ...row, content: newContent } : row)));
-  };
+  const onEdit = useCallback((targetId, newContent) => {
+    setData((data) => data.map((row) => (row.id === targetId ? { ...row, content: newContent } : row)));
+  }, []);
 
   const getDiaryAnalysis = useMemo(() => {
     const goodCount = data.filter((row) => row.emotion >= 3).length;
